@@ -1,0 +1,564 @@
+-- 1. 查询 Customer 表中客户的数量
+SELECT COUNT(*) FROM Customer;
+
+-- 2. 查询 Invoice 表中发票总金额的最大值
+SELECT MAX(Total) FROM Invoice;
+
+-- 3. 查询 Album 表中唱片数量的平均值
+SELECT AVG(AlbumId) FROM Album;
+
+-- 4. 查询 Employee 表中员工的总数
+SELECT COUNT(*) FROM Employee;
+
+-- 5. 查询 Track 表中时长最长的音乐的长度（单位：毫秒）
+SELECT MAX(Milliseconds) FROM Track;
+
+-- 6. 查询 Invoice 表中发票数量最多的客户的姓氏
+SELECT LastName FROM Customer 
+WHERE CustomerId = (SELECT TOP 1 CustomerId 
+                    FROM Invoice 
+                    GROUP BY CustomerId 
+                    ORDER BY COUNT(*) DESC);
+
+-- 7. 查询 Artist 表中歌手名字为 "Queen" 的歌手的 ID
+SELECT ArtistId FROM Artist WHERE Name = 'Queen';
+
+-- 8. 查询 Invoice 表中发票数量最多的客户的 ID
+SELECT CustomerId FROM Invoice 
+GROUP BY CustomerId 
+ORDER BY COUNT(*) DESC 
+LIMIT 1;
+
+-- 9. 查询 Track 表中唱片时长最短的唱片的名称
+SELECT Title FROM Album 
+WHERE AlbumId = (SELECT AlbumId 
+                 FROM Track 
+                 GROUP BY AlbumId 
+                 ORDER BY MIN(Milliseconds) ASC 
+                 LIMIT 1);
+
+-- 10. 查询 Employee 表中最年轻的员工的出生日期
+SELECT MIN(BirthDate) FROM Employee;
+
+-- 11. 查询 InvoiceLine 表中销售数量最多的音乐的数量
+SELECT MAX(Quantity) FROM InvoiceLine;
+
+-- 12. 查询 Artist 表中名字以 "C" 开头的艺术家的数量
+SELECT COUNT(*) FROM Artist WHERE Name LIKE 'C%';
+
+-- 13. 查询 Employee 表中工作标题为 "Sales Support Agent" 的员工的数量
+SELECT COUNT(*) FROM Employee WHERE Title = 'Sales Support Agent';
+
+-- 14. 查询 Track 表中售价最便宜的音乐的售价
+SELECT MIN(UnitPrice) FROM Track;
+
+-- 15. 查询 Invoice 表中最早的发票日期
+SELECT MIN(InvoiceDate) FROM Invoice;
+
+-- 16. 查询 Playlist 表中包含音乐数量最多的播放列表的名称
+SELECT Name FROM Playlist 
+WHERE PlaylistId = (SELECT PlaylistId 
+                    FROM PlaylistTrack 
+                    GROUP BY PlaylistId 
+                    ORDER BY COUNT(*) DESC 
+                    LIMIT 1);
+
+-- 17. 查询 Customer 表中住在国家为 "Canada" 的客户的数量
+SELECT COUNT(*) FROM Customer WHERE Country = 'Canada';
+
+-- 18. 查询 Album 表中名字包含 "Greatest Hits" 的唱片的数量
+SELECT COUNT(*) FROM Album WHERE Title LIKE '%Greatest Hits%';
+
+-- 19. 查询 Invoice 表中销售数量最多的音乐的 ID
+SELECT TrackId FROM InvoiceLine 
+GROUP BY TrackId 
+ORDER BY SUM(Quantity) DESC 
+LIMIT 1;
+
+-- 20. 查询 Employee 表中职位不为空的员工的数量
+SELECT COUNT(*) FROM Employee WHERE Title IS NOT NULL;
+
+-- 21. 查询 Playlist 表中音乐数量为 0 的播放列表的名称
+SELECT Name FROM Playlist 
+WHERE PlaylistId NOT IN (SELECT DISTINCT PlaylistId FROM PlaylistTrack);
+
+-- 22. 查询 InvoiceLine 表中售价最贵的音乐的售价
+SELECT MAX(UnitPrice) FROM InvoiceLine;
+
+-- 23. 查询 Genre 表中音乐风格的数量
+SELECT COUNT(*) FROM Genre;
+
+-- 24. 查询 Track 表中长度大于 10 分钟（即 600,000 毫秒）的音乐的数量
+SELECT COUNT(*) FROM Track WHERE Milliseconds > 600000;
+
+-- 25. 查询 Invoice 表中发票日期在 2010 年之后的发票数量
+SELECT COUNT(*) FROM Invoice WHERE InvoiceDate >= '2010-01-01';
+
+-- 26. 查询 Customer 表中姓氏以 "S" 结尾的客户的数量
+SELECT COUNT(*) FROM Customer WHERE LastName LIKE '%S';
+
+-- 27. 查询 Track 表中时长在 3 分钟（即 180,000 毫秒）和 4 分钟之间的音乐的数量
+SELECT COUNT(*) FROM Track WHERE Milliseconds >= 180000 AND Milliseconds <= 240000;
+
+-- 28. 查询 Employee 表中下属员工最多的经理的姓名
+SELECT FirstName, LastName FROM Employee 
+WHERE EmployeeId = (SELECT ReportsTo 
+                    FROM Employee 
+                    GROUP BY ReportsTo 
+                    ORDER BY COUNT(*) DESC 
+                    LIMIT 1);
+
+-- 29. 查询 InvoiceLine 表中销售总金额最高的音乐的 ID
+SELECT TrackId FROM InvoiceLine 
+GROUP BY TrackId 
+ORDER BY SUM(Quantity * UnitPrice) DESC 
+LIMIT 1;
+
+-- 30. 查询 Album 表中音乐唱片长度总和最长的唱片的名称
+SELECT Title FROM Album 
+WHERE AlbumId = (SELECT AlbumId 
+                 FROM Track 
+                 GROUP BY AlbumId 
+                 ORDER BY SUM(Milliseconds) DESC 
+                 LIMIT 1);
+
+-- 31. 查询 Employee 表中出生日期在 1980 年之前的员工的数量
+SELECT COUNT(*) FROM Employee WHERE YEAR(BirthDate) < 1980;
+
+-- 32. 查询 InvoiceLine 表中销售数量最多的音乐的 ID
+SELECT TrackId FROM InvoiceLine 
+GROUP BY TrackId 
+ORDER BY SUM(Quantity) DESC 
+LIMIT 1;
+
+-- 33. 查询 Playlist 表中包含音乐数量最少的播放列表的名称
+SELECT Name FROM Playlist 
+WHERE PlaylistId = (SELECT PlaylistId 
+                    FROM PlaylistTrack 
+                    GROUP BY PlaylistId 
+                    ORDER BY COUNT(*) ASC 
+                    LIMIT 1);
+
+-- 34. 查询 Customer 表中姓氏为 "Smith" 的客户的数量
+SELECT COUNT(*) FROM Customer WHERE LastName = 'Smith';
+
+-- 35. 查询 Invoice 表中发票总金额在 10 美元（即 10.00）及以下的发票数量
+SELECT COUNT(*) FROM Invoice WHERE Total <= 10.00;
+
+-- 36. 查询 MediaType 表中音频类型的数量
+SELECT COUNT(*) FROM MediaType WHERE Name LIKE '%audio%';
+
+-- 37. 查询 Artist 表中艺术家的数量
+SELECT COUNT(*) FROM Artist;
+
+-- 38. 查询 Track 表中流派（genre）为 "Rock" 的音乐的数量
+SELECT COUNT(*) FROM Track WHERE GenreId = (SELECT GenreId FROM Genre WHERE Name = 'Rock');
+
+-- 39. 查询 Employee 表中最晚的入职日期
+SELECT MAX(HireDate) FROM Employee;
+
+-- 40. 查询 Invoice 表中发票总金额最高的客户的 ID
+SELECT CustomerId FROM Invoice 
+GROUP BY CustomerId 
+ORDER BY SUM(Total) DESC 
+LIMIT 1;
+
+-- 41. 查询 Employee 表中名字包含 "an" 的员工的数量
+SELECT COUNT(*) FROM Employee WHERE FirstName LIKE '%an%';
+
+-- 42. 查询 Invoice 表中平均发票总金额
+SELECT AVG(Total) FROM Invoice;
+
+-- 43. 查询 Track 表中售价最高的音乐的售价
+SELECT MAX(UnitPrice) FROM Track;
+
+-- 44. 查询 Employee 表中工作标题以 "Manager" 结尾的员工的数量
+SELECT COUNT(*) FROM Employee WHERE Title LIKE '%Manager';
+
+-- 45. 查询 Genre 表中名字包含 "Rock" 的流派的数量
+SELECT COUNT(*) FROM Genre WHERE Name LIKE '%Rock%';
+
+-- 46. 查询 Invoice 表中发票数量最多的国家
+SELECT BillingCountry FROM Invoice 
+GROUP BY BillingCountry 
+ORDER BY COUNT(*) DESC 
+LIMIT 1;
+
+-- 47. 查询 Customer 表中居住在国家为 "Brazil" 且支持代表 ID 为 3 的客户的数量
+SELECT COUNT(*) FROM Customer WHERE Country = 'Brazil' AND SupportRepId = 3;
+
+-- 48. 查询 Invoice 表中发票日期在 2012 年 1 月的发票数量
+SELECT COUNT(*) FROM Invoice WHERE InvoiceDate BETWEEN '2012-01-01' AND '2012-01-31';
+
+-- 49. 查询 Album 表中平均唱片长度
+SELECT AVG(Milliseconds) FROM Track WHERE AlbumId IS NOT NULL;
+
+-- 50. 查询 Employee 表中工作标题为 "Sales Support Agent" 的员工的姓氏和名字
+SELECT FirstName, LastName FROM Employee WHERE Title = 'Sales Support Agent';
+ 
+-- 51. 查询 Invoice 表中平均每个发票的音乐数量
+SELECT AVG(Quantity) FROM InvoiceLine;
+
+-- 52. 查询 Artist 表中包含 "a" 字母最多的艺术家的名字
+SELECT Name FROM Artist 
+ORDER BY LENGTH(Name) - LENGTH(REPLACE(Name, 'a', '')) DESC 
+LIMIT 1;
+
+-- 53. 查询 Invoice 表中最晚的发票日期
+SELECT MAX(InvoiceDate) FROM Invoice;
+
+-- 54. 查询 Playlist 表中包含音乐数量最多的播放列表的名称和音乐数量
+SELECT Name, COUNT(*) AS MusicCount FROM PlaylistTrack 
+JOIN Playlist ON PlaylistTrack.PlaylistId = Playlist.PlaylistId 
+GROUP BY PlaylistTrack.PlaylistId 
+ORDER BY MusicCount DESC 
+LIMIT 1;
+
+-- 55. 查询 Track 表中售价在 1 美元（即 1.00）及以下的音乐数量
+SELECT COUNT(*) FROM Track WHERE UnitPrice <= 1.00;
+
+-- 56. 查询 Customer 表中支持代表为 5 号员工的客户数量
+SELECT COUNT(*) FROM Customer WHERE SupportRepId = 5;
+
+-- 57. 查询 Invoice 表中每个发票的总音乐数量
+SELECT InvoiceId, SUM(Quantity) AS TotalQuantity FROM InvoiceLine 
+GROUP BY InvoiceId;
+
+-- 58. 查询 Album 表中平均唱片售价
+SELECT AVG(UnitPrice) FROM Track WHERE AlbumId IS NOT NULL;
+
+-- 59. 查询 Employee 表中最晚的出生日期
+SELECT MIN(BirthDate) FROM Employee;
+
+-- 60. 查询 InvoiceLine 表中销售数量最少的音乐的 ID
+SELECT TrackId FROM InvoiceLine 
+GROUP BY TrackId 
+ORDER BY SUM(Quantity) ASC 
+LIMIT 1;
+
+-- 61. 查询 Playlist 表中不包含任何音乐的播放列表的数量
+SELECT COUNT(*) FROM Playlist 
+WHERE PlaylistId NOT IN (SELECT DISTINCT PlaylistId FROM PlaylistTrack);
+
+-- 62. 查询 MediaType 表中音频类型的平均售价
+SELECT AVG(UnitPrice) FROM Track 
+JOIN MediaType ON Track.MediaTypeId = MediaType.MediaTypeId 
+WHERE MediaType.Name LIKE '%audio%';
+
+-- 63. 查询 Employee 表中经理数量
+SELECT COUNT(*) FROM Employee WHERE Title LIKE '%Manager';
+
+-- 64. 查询 Invoice 表中平均每个发票的销售总额
+SELECT AVG(Total) FROM Invoice;
+
+-- 65. 查询 Track 表中售价在 0.99 美元（即 0.99）及以下的音乐数量
+SELECT COUNT(*) FROM Track WHERE UnitPrice <= 0.99;
+
+-- 66. 查询 Invoice 表中发票日期最早的客户的 ID
+SELECT CustomerId FROM Invoice 
+WHERE InvoiceDate = (SELECT MIN(InvoiceDate) FROM Invoice) 
+LIMIT 1;
+
+-- 67. 查询 Album 表中包含最多音乐的唱片的名称和音乐数量
+SELECT Title, COUNT(*) AS MusicCount FROM Track 
+JOIN Album ON Track.AlbumId = Album.AlbumId 
+GROUP BY Album.AlbumId 
+ORDER BY MusicCount DESC 
+LIMIT 1;
+
+-- 68. 查询 Track 表中流派（genre）数量最多的前 5 个流派的名称和数量
+SELECT Genre.Name, COUNT(*) AS GenreCount FROM Track 
+JOIN Genre ON Track.GenreId = Genre.GenreId 
+GROUP BY Genre.Name 
+ORDER BY GenreCount DESC 
+LIMIT 5;
+
+-- 69. 查询 Customer 表中居住在国家为 "USA" 的客户的数量
+SELECT COUNT(*) FROM Customer WHERE Country = 'USA';
+
+-- 70. 查询 Playlist 表中包含音乐数量最少的前 5 个播放列表的名称和音乐数量
+SELECT Playlist.Name, COUNT(*) AS MusicCount FROM PlaylistTrack 
+JOIN Playlist ON PlaylistTrack.PlaylistId = Playlist.PlaylistId 
+GROUP BY PlaylistTrack.PlaylistId 
+ORDER BY MusicCount ASC 
+LIMIT 5;
+
+-- 71. 查询 Track 表中最长的音乐长度（以毫秒计）
+SELECT MAX(Milliseconds) FROM Track;
+
+-- 72. 查询 Employee 表中经理的姓氏和名字
+SELECT FirstName, LastName FROM Employee WHERE Title LIKE '%Manager';
+
+-- 73. 查询 Invoice 表中发票日期在 2013 年的发票总金额
+SELECT SUM(Total) FROM Invoice WHERE InvoiceDate BETWEEN '2013-01-01' AND '2013-12-31';
+
+-- 74. 查询 Customer 表中平均每个客户的销售额
+SELECT AVG(Total) FROM Invoice 
+WHERE CustomerId IN (SELECT CustomerId FROM Customer);
+
+-- 75. 查询 Invoice 表中发票日期最早的日期和发票总金额
+SELECT InvoiceDate, SUM(Total) FROM Invoice 
+WHERE InvoiceDate = (SELECT MIN(InvoiceDate) FROM Invoice);
+
+-- 76. 查询 Track 表中每个流派的音乐数量
+SELECT Genre.Name, COUNT(*) AS MusicCount FROM Track 
+JOIN Genre ON Track.GenreId = Genre.GenreId 
+GROUP BY Genre.Name;
+
+-- 77. 查询 Customer 表中居住在国家为 "Canada" 且客户姓名中包含 "a" 的客户数量
+SELECT COUNT(*) FROM Customer 
+WHERE Country = 'Canada' AND (FirstName LIKE '%a%' OR LastName LIKE '%a%');
+
+-- 78. 查询 InvoiceLine 表中每个发票的平均音乐售价
+SELECT InvoiceId, AVG(UnitPrice) AS AvgUnitPrice FROM InvoiceLine 
+GROUP BY InvoiceId;
+
+-- 79. 查询 Album 表中售价最高的唱片的名称和售价
+SELECT Title, MAX(UnitPrice) FROM Track 
+JOIN Album ON Track.AlbumId = Album.AlbumId;
+
+-- 80. 查询 Employee 表中职位以 "Representative" 结尾的员工的数量
+SELECT COUNT(*) FROM Employee WHERE Title LIKE '%Representative';
+
+-- 81. 查询 Playlist 表中包含唯一音乐数量最多的前 5 个播放列表的名称和音乐数量
+SELECT Playlist.Name, COUNT(DISTINCT TrackId) AS UniqueMusicCount FROM PlaylistTrack 
+JOIN Playlist ON PlaylistTrack.PlaylistId = Playlist.PlaylistId 
+GROUP BY PlaylistTrack.PlaylistId 
+ORDER BY UniqueMusicCount DESC 
+LIMIT 5;
+
+-- 82. 查询 Track 表中最短的音乐长度（以毫秒计）
+SELECT MIN(Milliseconds) FROM Track;
+
+-- 83. 查询 Invoice 表中每个客户的发票总金额
+SELECT CustomerId, SUM(Total) AS TotalAmount FROM Invoice 
+GROUP BY CustomerId;
+
+-- 84. 查询 Employee 表中出生日期最晚的员工的职位
+SELECT Title FROM Employee WHERE BirthDate = (SELECT MAX(BirthDate) FROM Employee);
+
+-- 85. 查询 Customer 表中居住在国家为 "Germany" 且支持代表 ID 为 4 或 5 的客户的数量
+SELECT COUNT(*) FROM Customer 
+WHERE Country = 'Germany' AND SupportRepId IN (4, 5);
+
+-- 86. 查询 Invoice 表中发票日期最晚的日期和发票总金额
+SELECT InvoiceDate, SUM(Total) FROM Invoice 
+WHERE InvoiceDate = (SELECT MAX(InvoiceDate) FROM Invoice);
+
+-- 87. 查询 Playlist 表中包含音乐数量最多的前 5 个播放列表的名称和音乐数量
+SELECT Playlist.Name, COUNT(*) AS MusicCount FROM PlaylistTrack 
+JOIN Playlist ON PlaylistTrack.PlaylistId = Playlist.PlaylistId 
+GROUP BY PlaylistTrack.PlaylistId 
+ORDER BY MusicCount DESC 
+LIMIT 5;
+
+-- 88. 查询 Track 表中平均音乐售价最高的流派的名称和平均售价
+SELECT Genre.Name, AVG(UnitPrice) AS AvgUnitPrice FROM Track 
+JOIN Genre ON Track.GenreId = Genre.GenreId 
+GROUP BY Genre.Name 
+ORDER BY AvgUnitPrice DESC 
+LIMIT 1;
+
+-- 89. 查询 Employee 表中职位以 "Assistant" 结尾的员工的数量
+SELECT COUNT(*) FROM Employee WHERE Title LIKE '%Assistant';
+
+-- 90. 查询 InvoiceLine 表中售价最高的音乐的 ID 和售价
+SELECT TrackId, MAX(UnitPrice) FROM InvoiceLine;
+
+-- 91. 查询 Customer 表中购买了音乐的客户数量
+SELECT COUNT(DISTINCT CustomerId) FROM Invoice;
+
+-- 92. 查询 Album 表中包含音乐数量最少的前 5 个唱片的名称和音乐数量
+SELECT Title, COUNT(*) AS MusicCount FROM Track 
+JOIN Album ON Track.AlbumId = Album.AlbumId 
+GROUP BY Album.AlbumId 
+ORDER BY MusicCount ASC 
+LIMIT 5;
+
+-- 93. 查询 Track 表中流派名称以 "Rock" 开头的音乐数量
+SELECT COUNT(*) FROM Track 
+JOIN Genre ON Track.GenreId = Genre.GenreId 
+WHERE Genre.Name LIKE 'Rock%';
+
+-- 94. 查询 Employee 表中职位以 "Assistant" 结尾的员工的姓氏和名字
+SELECT FirstName, LastName FROM Employee WHERE Title LIKE '%Assistant';
+
+-- 95. 查询 Playlist 表中包含唯一音乐数量最少的前 5 个播放列表的名称和音乐数量
+SELECT Playlist.Name, COUNT(DISTINCT TrackId) AS UniqueMusicCount FROM PlaylistTrack 
+JOIN Playlist ON PlaylistTrack.PlaylistId = Playlist.PlaylistId 
+GROUP BY PlaylistTrack.PlaylistId 
+ORDER BY UniqueMusicCount ASC 
+LIMIT 5;
+
+-- 96. 查询 MediaType 表中售价最高的媒体类型的名称和售价
+SELECT Name, MAX(UnitPrice) FROM MediaType;
+
+-- 97. 查询 Track 表中音乐长度（以毫秒计）大于 10 分钟的音乐数量
+SELECT COUNT(*) FROM Track WHERE Milliseconds > 10 * 60 * 1000;
+
+-- 98. 查询 InvoiceLine 表中售价最低的音乐的 ID 和售价
+SELECT TrackId, MIN(UnitPrice) FROM InvoiceLine;
+
+-- 99. 查询 Customer 表中购买音乐的客户的平均销售额
+SELECT
+
+-- 99. 查询 Customer 表中购买音乐的客户的平均销售额
+SELECT AVG(Total) FROM Invoice WHERE CustomerId IN (SELECT CustomerId FROM Customer);
+
+-- 100. 查询 Track 表中售价最低的音乐的名称和售价
+SELECT Name, MIN(UnitPrice) FROM Track;
+
+-- 101. 查询 Employee 表中出生日期在 1980 年代的员工的数量
+SELECT COUNT(*) FROM Employee WHERE BirthDate BETWEEN '1980-01-01' AND '1989-12-31';
+
+-- 102. 查询 Playlist 表中包含音乐数量最少的前 5 个播放列表的名称和音乐数量
+SELECT Playlist.Name, COUNT(*) AS MusicCount FROM PlaylistTrack 
+JOIN Playlist ON PlaylistTrack.PlaylistId = Playlist.PlaylistId 
+GROUP BY PlaylistTrack.PlaylistId 
+ORDER BY MusicCount ASC 
+LIMIT 5;
+
+-- 103. 查询 Track 表中音乐长度（以毫秒计）小于 1 分钟的音乐数量
+SELECT COUNT(*) FROM Track WHERE Milliseconds < 60 * 1000;
+
+-- 104. 查询 Invoice 表中每个国家的销售总金额
+SELECT BillingCountry AS Country, SUM(Total) AS TotalSales FROM Invoice 
+GROUP BY BillingCountry;
+
+-- 105. 查询 Customer 表中国家为 "USA" 且客户姓名中包含 "a" 的客户数量
+SELECT COUNT(*) FROM Customer WHERE Country = 'USA' AND (FirstName LIKE '%a%' OR LastName LIKE '%a%');
+
+-- 106. 查询 Invoice 表中最大的发票金额
+SELECT MAX(Total) FROM Invoice;
+
+-- 107. 查询 Playlist 表中包含流派数量最多的前 5 个播放列表的名称和流派数量
+SELECT Playlist.Name, COUNT(DISTINCT GenreId) AS UniqueGenreCount FROM PlaylistTrack 
+JOIN Track ON PlaylistTrack.TrackId = Track.TrackId 
+JOIN Genre ON Track.GenreId = Genre.GenreId 
+JOIN Playlist ON PlaylistTrack.PlaylistId = Playlist.PlaylistId 
+GROUP BY PlaylistTrack.PlaylistId 
+ORDER BY UniqueGenreCount DESC 
+LIMIT 5;
+
+-- 108. 查询 Employee 表中没有下属的经理的姓氏和名字
+SELECT FirstName, LastName FROM Employee WHERE EmployeeId NOT IN (SELECT ReportsTo FROM Employee);
+
+-- 109. 查询 InvoiceLine 表中销售额最高的音乐的 ID 和销售额
+SELECT TrackId, MAX(UnitPrice * Quantity) FROM InvoiceLine;
+
+-- 110. 查询 Customer 表中支持代表 ID 为 5 的客户数量
+SELECT COUNT(*) FROM Customer WHERE SupportRepId = 5;
+
+-- 111. 查询 Track 表中音乐长度（以毫秒计）大于 6 分钟且小于 10 分钟的音乐数量
+SELECT COUNT(*) FROM Track WHERE Milliseconds > 6 * 60 * 1000 AND Milliseconds < 10 * 60 * 1000;
+
+-- 112. 查询 InvoiceLine 表中销售额最低的音乐的 ID 和销售额
+SELECT TrackId, MIN(UnitPrice * Quantity) FROM Invoice
+
+-- 113. 查询 Track 表中没有分配到唱片的音乐数量
+SELECT COUNT(*) FROM Track WHERE AlbumId IS NULL;
+
+-- 114. 查询 Customer 表中姓氏以 "Smith" 结尾的客户数量
+SELECT COUNT(*) FROM Customer WHERE LastName LIKE '%Smith';
+
+-- 115. 查询 Invoice 表中每年的销售总金额
+SELECT STRFTIME('%Y', InvoiceDate) AS Year, SUM(Total) AS TotalSales FROM Invoice 
+GROUP BY Year;
+
+-- 116. 查询 Playlist 表中包含音乐数量最多的前 5 个播放列表的名称和音乐数量，只包括流派为 "Rock" 的音乐
+SELECT Playlist.Name, COUNT(*) AS MusicCount FROM PlaylistTrack 
+JOIN Track ON PlaylistTrack.TrackId = Track.TrackId 
+JOIN Genre ON Track.GenreId = Genre.GenreId 
+JOIN Playlist ON PlaylistTrack.PlaylistId = Playlist.PlaylistId 
+WHERE Genre.Name = 'Rock'
+GROUP BY PlaylistTrack.PlaylistId 
+ORDER BY MusicCount DESC 
+LIMIT 5;
+
+-- 117. 查询 Employee 表中经理管理的员工的数量
+SELECT ReportsTo, COUNT(*) FROM Employee WHERE ReportsTo IS NOT NULL 
+GROUP BY ReportsTo;
+
+-- 118. 查询 Track 表中音乐长度（以毫秒计）的平均值
+SELECT AVG(Milliseconds) FROM Track;
+
+-- 119. 查询 Customer 表中购买了音乐的唯一国家数量
+SELECT COUNT(DISTINCT Country) FROM Customer WHERE CustomerId IN (SELECT CustomerId FROM Invoice);
+
+-- 120. 查询 Playlist 表中包含音乐数量最多的前 5 个播放列表的名称和音乐数量，只包括流派名称以 "Metal" 结尾的音乐
+SELECT Playlist.Name, COUNT(*) AS MusicCount FROM PlaylistTrack 
+JOIN Track ON PlaylistTrack.TrackId = Track.TrackId 
+JOIN Genre ON Track.GenreId = Genre.GenreId 
+JOIN Playlist ON PlaylistTrack.PlaylistId = Playlist.PlaylistId 
+WHERE Genre.Name LIKE '%Metal'
+GROUP BY PlaylistTrack.PlaylistId 
+ORDER BY MusicCount DESC 
+LIMIT 5;
+
+-- 121. 查询 Track 表中音乐长度（以毫秒计）大于 10 分钟且不属于唱片 ID 为 1 的唱片的音乐数量
+SELECT COUNT(*) FROM Track WHERE Milliseconds > 10 * 60 * 1000 AND AlbumId != 1;
+
+-- 122. 查询 Invoice 表中每个国家的平均销售额
+SELECT BillingCountry AS Country, AVG(Total) AS AvgSales FROM Invoice 
+GROUP BY BillingCountry;
+
+-- 123. 查询 Employee 表中最年轻的员工的出生日期
+SELECT BirthDate FROM Employee 
+WHERE BirthDate = (SELECT MIN(BirthDate) FROM Employee);
+
+-- 124. 查询 InvoiceLine 表中每个售价区间的音乐数量，售价区间为 0 到 0.99，1 到 1.99，2 到 2.99，3 到 3.99，4 到 4.99，5 到 5.99，6
+SELECT BirthDate FROM Employee pass;
+
+-- 125. 查询 Customer 表中购买了流派名称以 "Blues" 开头的音乐的客户数量
+SELECT COUNT(DISTINCT CustomerId) FROM InvoiceLine 
+JOIN Track ON InvoiceLine.TrackId = Track.TrackId 
+JOIN Genre ON Track.GenreId = Genre.GenreId 
+WHERE Genre.Name LIKE 'Blues%';
+
+-- 126. 查询 InvoiceLine 表中售价最高的音乐的 ID 和售价
+SELECT TrackId, UnitPrice FROM InvoiceLine 
+WHERE UnitPrice = (SELECT MAX(UnitPrice) FROM InvoiceLine);
+
+-- 127. 查询 Employee 表中出生日期在 1980 年代且职称中包含 "Manager" 的员工数量
+SELECT COUNT(*) FROM Employee 
+WHERE BirthDate BETWEEN '1980-01-01' AND '1989-12-31' AND Title LIKE '%Manager%';
+
+-- 128. 查询 Invoice 表中最小的发票金额
+SELECT MIN(Total) FROM Invoice;
+
+-- 129. 查询 Track 表中音乐长度（以毫秒计）大于 5 分钟的音乐数量
+SELECT COUNT(*) FROM Track WHERE Milliseconds > 5 * 60 * 1000;
+
+-- 130. 查询 Customer 表中每个国家的购买音乐的客户数量
+SELECT BillingCountry AS Country, COUNT(DISTINCT CustomerId) AS CustomerCount FROM Invoice 
+GROUP BY BillingCountry;
+
+-- 131. 查询 Playlist 表中包含音乐数量最少的前 5 个播放列表的名称和音乐数量，只包括流派名称以 "Pop" 结尾的音乐
+SELECT Playlist.Name, COUNT(*) AS MusicCount FROM PlaylistTrack 
+JOIN Track ON PlaylistTrack.TrackId = Track.TrackId 
+JOIN Genre ON Track.GenreId = Genre.GenreId 
+JOIN Playlist ON PlaylistTrack.PlaylistId = Playlist.PlaylistId 
+WHERE Genre.Name LIKE '%Pop'
+GROUP BY PlaylistTrack.PlaylistId 
+ORDER BY MusicCount ASC 
+LIMIT 5;
+
+-- 132. 查询 Employee 表中出生日期最早的员工的姓氏和名字
+SELECT FirstName, LastName FROM Employee 
+WHERE BirthDate = (SELECT MIN(BirthDate) FROM Employee);
+
+-- 133. 查询 InvoiceLine 表中售价区间在 0 到 0.99 之间的音乐数量
+SELECT COUNT(*) FROM InvoiceLine 
+JOIN Track ON InvoiceLine.TrackId = Track.TrackId 
+WHERE UnitPrice >= 0 AND UnitPrice < 1;
+
+-- 134. 查询 Customer 表中购买音乐的客户数量
+SELECT COUNT(DISTINCT CustomerId) FROM Invoice;
+
+-- 135. 查询 Track 表中音乐长度（以毫秒计）小于 2 分钟的音乐数量
+SELECT COUNT(*) FROM Track WHERE Milliseconds < 2 * 60 * 1000;
+
+-- 136. 查询 Playlist 表中包含音乐数量最多的前 5 个播放列表的名称和音乐数量，只包括流派名称以 "Electronic" 结尾的音乐
+SELECT Playlist.Name, COUNT(*) AS MusicCount FROM PlaylistTrack 
+JOIN Track ON PlaylistTrack.TrackId = Track.TrackId
+
